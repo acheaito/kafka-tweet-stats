@@ -1,12 +1,7 @@
-package com.cheaito.twitter;
+package com.cheaito.twitter.digester;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
+import com.cheaito.twitter.producer.TweetProducer;
 import org.apache.http.client.fluent.Request;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import java.io.*;
 import java.net.URI;
@@ -18,8 +13,10 @@ public class TwitterDigester {
     private final static String TWEETS_SAMPLE_STREAM_ENDPOINT = "/tweets/sample/stream";
 
     private final Properties twitterProps;
+    private final TweetProducer tweetProducer;
 
-    public TwitterDigester() throws IOException {
+    public TwitterDigester(TweetProducer tweetProducer) throws IOException {
+        this.tweetProducer = tweetProducer;
         twitterProps = new Properties();
         twitterProps.load(TwitterDigester.class.getClassLoader().getResourceAsStream(TWITTER_PROPS_FILE));
     }
@@ -42,7 +39,7 @@ public class TwitterDigester {
                                 if (tweet == null) {
                                     keepReading = false;
                                 }
-                                System.out.println(tweet);
+                                tweetProducer.produce(tweet);
                                 try {
                                     Thread.sleep(readDelay);
                                 } catch (InterruptedException e) {
