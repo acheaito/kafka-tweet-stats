@@ -1,4 +1,4 @@
-package com.cheaito.twitter.producer;
+package com.cheaito.twitter.kafka;
 
 import javax.inject.Qualifier;
 

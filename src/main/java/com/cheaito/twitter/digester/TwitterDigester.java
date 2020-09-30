@@ -1,6 +1,6 @@
 package com.cheaito.twitter.digester;
 
-import com.cheaito.twitter.producer.TweetKafkaProducer;
+import com.cheaito.twitter.kafka.producer.TweetKafkaProducer;
 import org.apache.http.client.fluent.Request;
 
 import javax.inject.Inject;
