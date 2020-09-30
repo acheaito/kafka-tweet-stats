@@ -1,8 +1,9 @@
 package com.cheaito.twitter.digester;
 
-import com.cheaito.twitter.producer.TweetProducer;
+import com.cheaito.twitter.producer.TweetKafkaProducer;
 import org.apache.http.client.fluent.Request;
 
+import javax.inject.Inject;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,10 +14,17 @@ public class TwitterDigester {
     private final static String TWEETS_SAMPLE_STREAM_ENDPOINT = "/tweets/sample/stream";
 
     private final Properties twitterProps;
-    private final TweetProducer tweetProducer;
+    private final TweetKafkaProducer tweetKafkaProducer;
 
-    public TwitterDigester(TweetProducer tweetProducer) throws IOException {
-        this.tweetProducer = tweetProducer;
+    @Deprecated
+    public TwitterDigester() {
+        this.twitterProps = null;
+        this.tweetKafkaProducer = null;
+    }
+
+    @Inject
+    public TwitterDigester(TweetKafkaProducer tweetKafkaProducer) throws IOException {
+        this.tweetKafkaProducer = tweetKafkaProducer;
         twitterProps = new Properties();
         twitterProps.load(TwitterDigester.class.getClassLoader().getResourceAsStream(TWITTER_PROPS_FILE));
     }
@@ -39,7 +47,7 @@ public class TwitterDigester {
                                 if (tweet == null) {
                                     keepReading = false;
                                 }
-                                tweetProducer.produce(tweet);
+                                tweetKafkaProducer.produce(tweet);
                                 try {
                                     Thread.sleep(readDelay);
                                 } catch (InterruptedException e) {

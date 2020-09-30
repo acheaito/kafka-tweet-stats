@@ -1,19 +1,18 @@
 package com.cheaito.twitter;
 
 import com.cheaito.twitter.digester.TwitterDigester;
-import com.cheaito.twitter.domain.Tweet;
-import com.cheaito.twitter.producer.TweetProducer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Properties;
 
 public class Application {
     public static void main(String[] args) throws IOException, URISyntaxException {
-        Properties props = new Properties();
-        props.load(Application.class.getClassLoader().getResourceAsStream("kafka.properties"));
-        new TwitterDigester(new TweetProducer(new KafkaProducer<>(props), props.getProperty("topic.name"))).start();
+        Weld weld = new Weld();
+        WeldContainer weldContainer = weld.initialize();
+        TwitterDigester application = weldContainer.select(TwitterDigester.class).get();
+        application.start();
+        weld.shutdown();
     }
 }
