@@ -18,7 +18,10 @@ public class TweetKafkaTypeAdapter implements Serializer<Tweet>, Deserializer<Tw
     @Override
     public Tweet deserialize(String topic, byte[] bytes) {
         try {
-            return objectMapper.readValue(stringDeserializer.deserialize(topic, bytes), Tweet.class);
+            if (bytes != null && bytes.length > 0) {
+                String text = stringDeserializer.deserialize(topic, bytes);
+                return objectMapper.readValue(text, Tweet.class);
+            }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

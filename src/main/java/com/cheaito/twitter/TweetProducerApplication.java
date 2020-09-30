@@ -7,7 +7,7 @@ import org.jboss.weld.environment.se.WeldContainer;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class TweenProducerApplication {
+public class TweetProducerApplication {
     public static void main(String[] args) throws IOException, URISyntaxException {
         Weld weld = new Weld();
         WeldContainer weldContainer = weld.initialize();

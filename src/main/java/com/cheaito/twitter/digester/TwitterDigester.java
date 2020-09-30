@@ -16,12 +16,6 @@ public class TwitterDigester {
     private final Properties twitterProps;
     private final TweetKafkaProducer tweetKafkaProducer;
 
-    @Deprecated
-    public TwitterDigester() {
-        this.twitterProps = null;
-        this.tweetKafkaProducer = null;
-    }
-
     @Inject
     public TwitterDigester(TweetKafkaProducer tweetKafkaProducer) throws IOException {
         this.tweetKafkaProducer = tweetKafkaProducer;

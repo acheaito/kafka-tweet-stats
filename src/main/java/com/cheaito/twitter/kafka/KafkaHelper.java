@@ -1,8 +1,10 @@
 package com.cheaito.twitter.kafka;
 
-import com.cheaito.twitter.TweenProducerApplication;
+import com.cheaito.twitter.TweetProducerApplication;
 import com.cheaito.twitter.domain.Tweet;
+import com.cheaito.twitter.kafka.consumer.ConsumerRecordHandler;
 import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -16,7 +18,7 @@ public class KafkaHelper {
 
     public KafkaHelper() throws IOException {
         this.props = new Properties();
-        props.load(TweenProducerApplication.class.getClassLoader().getResourceAsStream("kafka.properties"));
+        props.load(TweetProducerApplication.class.getClassLoader().getResourceAsStream("kafka.properties"));
     }
 
     @Produces
@@ -33,5 +35,14 @@ public class KafkaHelper {
     @Produces
     public Consumer<String, Tweet> consumerInstance() {
         return new KafkaConsumer<>(props);
+    }
+
+    @Produces
+    public ConsumerRecordHandler<String, Tweet> recordHandlerInstance() {
+        return consumerRecords -> {
+            for (ConsumerRecord<String, Tweet> consumerRecord : consumerRecords) {
+                System.out.println(consumerRecord.value().getText());
+            }
+        };
     }
 }
