@@ -5,38 +5,32 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
 
 import javax.inject.Inject;
-import java.util.concurrent.Future;
+import java.util.Objects;
 
 public class TweetKafkaProducer {
     private final Producer<String, Tweet> producer;
     private final String topic;
     private final ObjectMapper objectMapper;
 
-    @Deprecated
-    public TweetKafkaProducer() {
-        producer = null;
-        topic = null;
-        objectMapper = null;
-    }
-
     @Inject
     public TweetKafkaProducer(Producer<String, Tweet> producer, @TopicName String topic, ObjectMapper objectMapper) {
-        this.producer = producer;
-        this.topic = topic;
-        this.objectMapper = objectMapper;
+        this.producer = Objects.requireNonNull(producer, "producer should not be null");
+        this.topic = Objects.requireNonNull(topic, "topic should not be null");
+        this.objectMapper = Objects.requireNonNull(objectMapper, "ObjectMapper should be null");
     }
 
-    public Future<RecordMetadata> produce(String tweetText) throws JsonProcessingException {
-        System.out.println("PARSING " + tweetText);
-        Tweet tweet = objectMapper.readValue(tweetText, Tweet.class);
-        return this.produce(tweet);
-    }
-
-    public Future<RecordMetadata> produce(Tweet tweet) {
-        System.out.println("PRODUCING " + tweet.getText());
-        return producer.send(new ProducerRecord<>(topic, tweet.getLang(), tweet));
+    public void produce(String tweetText) {
+        if (tweetText == null) {
+            return;
+        }
+        Tweet tweet = null;
+        try {
+            tweet = objectMapper.readValue(tweetText, Tweet.class);
+            producer.send(new ProducerRecord<>(topic, tweet.getLang(), tweet));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }
