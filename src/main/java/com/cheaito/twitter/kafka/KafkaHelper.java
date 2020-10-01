@@ -2,9 +2,7 @@ package com.cheaito.twitter.kafka;
 
 import com.cheaito.twitter.TweetProducerApplication;
 import com.cheaito.twitter.domain.Tweet;
-import com.cheaito.twitter.kafka.consumer.ConsumerRecordHandler;
 import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -37,12 +35,4 @@ public class KafkaHelper {
         return new KafkaConsumer<>(props);
     }
 
-    @Produces
-    public ConsumerRecordHandler<String, Tweet> recordHandlerInstance() {
-        return consumerRecords -> {
-            for (ConsumerRecord<String, Tweet> consumerRecord : consumerRecords) {
-                System.out.println(consumerRecord.value().getText());
-            }
-        };
-    }
 }
