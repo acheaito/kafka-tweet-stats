@@ -6,7 +6,12 @@
 
     <groupId>com.cheaito.twitter</groupId>
     <artifactId>twitter-digest</artifactId>
+    <packaging>pom</packaging>
     <version>0.0.1</version>
+    <modules>
+        <module>tweet-producer</module>
+        <module>tweet-aggregator</module>
+    </modules>
 
     <dependencies>
         <dependency>
