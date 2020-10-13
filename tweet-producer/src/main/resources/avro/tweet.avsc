@@ -1,0 +1,10 @@
+{
+  "namespace": "com.cheaito.twitter.domain",
+  "type": "record",
+  "name": "Tweet",
+  "fields": [
+    {"name": "id", "type":  "string", "default":  "", "doc":  "Tweet ID"},
+    {"name": "lang", "type":  "string", "default":  "", "doc":  "Tweet language"},
+    {"name": "text", "type":  "string", "default":  "", "doc":  "Tweet message"}
+  ]
+}
