@@ -14,6 +14,7 @@
         <module>tweet-aggregator</module>
         <module>tweet-consumer</module>
         <module>tweet-model</module>
+        <module>language-filter</module>
     </modules>
 
     <repositories>
@@ -24,7 +25,9 @@
     </repositories>
 
     <properties>
-        <avro.version>1.8.2</avro.version>
+        <avro.version>1.10.0</avro.version>
+        <kafka.version>2.6.0</kafka.version>
+        <confluent.version>5.5.1</confluent.version>
         <encoding>utf-8</encoding>
     </properties>
 
@@ -38,7 +41,7 @@
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
-                <version>2.6.0</version>
+                <version>${kafka.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -58,7 +61,7 @@
             <dependency>
                 <groupId>io.confluent</groupId>
                 <artifactId>kafka-avro-serializer</artifactId>
-                <version>5.3.0</version>
+                <version>${confluent.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.avro</groupId>
@@ -76,8 +79,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.5.1</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>1.9</source>
+                        <target>1.9</target>
                     </configuration>
                 </plugin>
             </plugins>
@@ -86,10 +89,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
             </plugin>
         </plugins>
     </build>
