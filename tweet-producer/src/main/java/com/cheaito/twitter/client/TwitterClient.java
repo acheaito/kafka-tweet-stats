@@ -46,9 +46,7 @@ public class TwitterClient {
                                 if (tweet == null) {
                                     keepReading = false;
                                 }
-                                System.out.println("raw=" + tweet);
                                 TwitterApiResponse apiResponse = objectMapper.readValue(tweet, TwitterApiResponse.class);
-                                System.out.println("parsed=" + apiResponse.getData());
                                 tweetKafkaProducer.produce(apiResponse.getData());
                                 try {
                                     Thread.sleep(readDelay);
