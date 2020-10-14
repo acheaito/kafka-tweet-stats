@@ -3,6 +3,7 @@ package com.cheaito.twitter.kafka.consumer;
 import com.cheaito.twitter.domain.Tweet;
 import com.cheaito.twitter.kafka.TopicName;
 import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import javax.inject.Inject;
 import java.time.Duration;
@@ -25,7 +26,8 @@ public class AnalyticsConsumer {
         try {
             consumer.subscribe(Collections.singletonList(topicName));
             while (keepConsuming) {
-                recordHandler.process(consumer.poll(Duration.ofMillis(1000)));
+                ConsumerRecords<String, Tweet> records = consumer.poll(Duration.ofMillis(10000));
+                recordHandler.process(records);
             }
         } finally {
             consumer.close();
