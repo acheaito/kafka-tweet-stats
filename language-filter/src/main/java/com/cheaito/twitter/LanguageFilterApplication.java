@@ -37,15 +37,16 @@ public class LanguageFilterApplication {
     private KafkaStreams createStreamTopology(Properties props) {
         StreamsBuilder builder = new StreamsBuilder();
 
-        KStream<String, Tweet> tweets = builder.stream(props.getProperty("source.topic.name"));
+        String sourceTopicName = props.getProperty("source.topic.name");
+        KStream<String, Tweet> tweets = builder.stream(sourceTopicName);
 
         String sanatizedTopicName = props.getProperty("sanitized.topic.name");
 
         tweets
-                .peek((k, tweet) -> logger.info("Tweet: {}", tweet.getText()))
-                .filter((key, value) -> value.getLang().equals(ENGLISH_LANG))
+//                .peek((k, tweet) -> logger.info("Tweet: {} - {}", tweet.getLang(), tweet.getText()))
+                .filter((key, tweet) -> tweet.getLang().equals(ENGLISH_LANG))
                 .transformValues(LanguageCleaner::new)
-                .peek((k, tweet) -> logger.info("Cleaned: {}", tweet.getText()))
+//                .peek((k, tweet) -> logger.info("Cleaned: {} - {}", tweet.getLang(), tweet.getText()))
                 .to(sanatizedTopicName);
 
         return new KafkaStreams(builder.build(), props);

@@ -36,7 +36,7 @@ public class WordMasker {
         String newText = text;
 
         for (String word : words) {
-            if (badWordList.contains(word)) {
+            if (badWordList.contains(word.toLowerCase())) {
                 newText = text.replace(word, "****");
             }
         }
