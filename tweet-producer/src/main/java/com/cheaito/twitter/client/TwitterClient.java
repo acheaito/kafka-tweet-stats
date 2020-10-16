@@ -3,6 +3,7 @@ package com.cheaito.twitter.client;
 import com.cheaito.twitter.kafka.producer.TweetKafkaProducer;
 import com.cheaito.twitter.model.TwitterApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
 
 import javax.inject.Inject;
@@ -33,27 +34,31 @@ public class TwitterClient {
     public void start() throws URISyntaxException, IOException {
         URI endpoint = new URI(twitterProps.getProperty("twitter.url")
                 + TWEETS_SAMPLE_STREAM_ENDPOINT
-                + "?tweet.fields=lang&user.fields=username&place.fields=full_name");
+                + "?tweet.fields=entities,lang&user.fields=username&place.fields=full_name");
         long readDelay = Long.parseLong(twitterProps.getProperty("app.readDelay", "1000"));
         Request.Get(endpoint)
                 .addHeader("Authorization", "Bearer " + twitterProps.getProperty("app.bearerToken"))
                 .execute()
-                .handleResponse(s -> {
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(s.getEntity().getContent())));
+                .handleResponse(httpResponse -> {
+                    if (httpResponse.getStatusLine().getStatusCode() >= HttpStatus.SC_BAD_REQUEST) {
+                        throw new RuntimeException("Bad response from Twitter: "
+                                + httpResponse.getStatusLine().getStatusCode() + " - " + httpResponse.getStatusLine().getReasonPhrase());
+                    }
+                    BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpResponse.getEntity().getContent())));
                     boolean keepReading = true;
-                            while (keepReading) {
-                                String tweet = br.readLine();
-                                if (tweet == null) {
-                                    keepReading = false;
-                                }
-                                TwitterApiResponse apiResponse = objectMapper.readValue(tweet, TwitterApiResponse.class);
-                                tweetKafkaProducer.produce(apiResponse.getData());
-                                try {
-                                    Thread.sleep(readDelay);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
+                    while (keepReading) {
+                        String response = br.readLine();
+                        if (response == null) {
+                            keepReading = false;
+                        }
+                        TwitterApiResponse apiResponse = objectMapper.readValue(response, TwitterApiResponse.class);
+                        tweetKafkaProducer.produce(apiResponse.getData());
+                        try {
+                            Thread.sleep(readDelay);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                             return null;
                         }
                 );

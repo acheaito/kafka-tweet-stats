@@ -1,8 +1,8 @@
 package com.cheaito.twitter;
 
 import com.cheaito.twitter.client.TwitterClient;
-import com.cheaito.twitter.domain.Tweet;
 import com.cheaito.twitter.kafka.TopicName;
+import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.jboss.weld.environment.se.Weld;

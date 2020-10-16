@@ -1,7 +1,5 @@
 package com.cheaito.twitter.model;
 
-import com.cheaito.twitter.domain.Tweet;
-
 public class TwitterApiResponse {
     public final Tweet data;
 

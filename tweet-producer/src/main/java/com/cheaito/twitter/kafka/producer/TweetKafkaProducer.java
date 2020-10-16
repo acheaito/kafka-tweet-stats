@@ -1,8 +1,8 @@
 package com.cheaito.twitter.kafka.producer;
 
 
-import com.cheaito.twitter.domain.Tweet;
 import com.cheaito.twitter.kafka.TopicName;
+import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 

@@ -1,10 +1,11 @@
 {
-  "namespace": "com.cheaito.twitter.domain",
+  "namespace": "com.cheaito.twitter.model",
   "type": "record",
   "name": "Tweet",
   "fields": [
     {"name": "id", "type":  "string", "default":  "", "doc":  "Tweet ID"},
     {"name": "lang", "type":  "string", "default":  "", "doc":  "Tweet language"},
-    {"name": "text", "type":  "string", "default":  "", "doc":  "Tweet message"}
+    {"name": "text", "type":  "string", "default":  "", "doc":  "Tweet message"},
+    {"name": "hashtags", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of hashtags in tweet"}
   ]
 }

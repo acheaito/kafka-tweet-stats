@@ -1,6 +1,6 @@
 package com.cheaito.twitter.kafka.consumer;
 
-import com.cheaito.twitter.domain.Tweet;
+import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 

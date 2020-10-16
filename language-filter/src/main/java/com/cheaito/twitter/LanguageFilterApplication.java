@@ -1,6 +1,6 @@
 package com.cheaito.twitter;
 
-import com.cheaito.twitter.domain.Tweet;
+import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
