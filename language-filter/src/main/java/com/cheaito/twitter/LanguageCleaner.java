@@ -13,7 +13,7 @@ class LanguageCleaner implements ValueTransformer<Tweet, Tweet> {
     @Override
     public Tweet transform(Tweet value) {
         String cleanedMessage = cleanMessage(value.getText());
-        return new Tweet(value.getId(), value.getLang(), cleanedMessage, value.getHashtags());
+        return new Tweet(value.getId(), value.getLang(), cleanedMessage, value.getCreatedAt(), value.getHashtags());
     }
 
     private String cleanMessage(String text) {

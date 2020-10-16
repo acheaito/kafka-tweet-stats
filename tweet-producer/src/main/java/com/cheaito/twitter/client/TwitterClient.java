@@ -34,7 +34,7 @@ public class TwitterClient {
     public void start() throws URISyntaxException, IOException {
         URI endpoint = new URI(twitterProps.getProperty("twitter.url")
                 + TWEETS_SAMPLE_STREAM_ENDPOINT
-                + "?tweet.fields=entities,lang&user.fields=username&place.fields=full_name");
+                + "?tweet.fields=entities,lang,created_at&user.fields=username&place.fields=full_name");
         long readDelay = Long.parseLong(twitterProps.getProperty("app.readDelay", "1000"));
         Request.Get(endpoint)
                 .addHeader("Authorization", "Bearer " + twitterProps.getProperty("app.bearerToken"))

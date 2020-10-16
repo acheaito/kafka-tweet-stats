@@ -22,10 +22,11 @@ public class TweetDeserializer extends JsonDeserializer<Tweet> {
         return new Tweet(node.get("id").textValue(),
                 node.get("lang").textValue(),
                 node.get("text").textValue(),
-                extractTags(node.get("entities"), p.getCodec(), ctxt));
+                node.get("created_at").textValue(),
+                extractTags(node.get("entities"), p.getCodec()));
     }
 
-    private List<String> extractTags(JsonNode entitiesNode, ObjectCodec codec, DeserializationContext ctxt) throws IOException {
+    private List<String> extractTags(JsonNode entitiesNode, ObjectCodec codec) throws IOException {
         if (entitiesNode == null) {
             return Collections.emptyList();
         }
@@ -35,7 +36,7 @@ public class TweetDeserializer extends JsonDeserializer<Tweet> {
             return Collections.emptyList();
         }
 
-        Hashtag[] hashtagArray = ctxt.readValue(hashtagsNode.traverse(codec), Hashtag[].class);
+        Hashtag[] hashtagArray = hashtagsNode.traverse(codec).readValueAs(Hashtag[].class);
         return Arrays.stream(hashtagArray)
                 .map(Hashtag::getTag)
                 .collect(Collectors.toList());

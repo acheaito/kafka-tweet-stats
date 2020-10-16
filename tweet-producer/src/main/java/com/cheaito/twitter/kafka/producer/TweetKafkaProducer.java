@@ -5,11 +5,14 @@ import com.cheaito.twitter.kafka.TopicName;
 import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.util.Objects;
 
 public class TweetKafkaProducer {
+    private final Logger logger = LoggerFactory.getLogger("kafka-producer");
     private final Producer<String, Tweet> producer;
     private final String topic;
 
@@ -23,6 +26,7 @@ public class TweetKafkaProducer {
         if (tweet == null) {
             return;
         }
+        logger.debug("Producing message to topic {}: {} - {} - {} - {}", topic, tweet.getId(), tweet.getLang(), tweet.getText(), tweet.getHashtags());
         producer.send(new ProducerRecord<>(topic, tweet.getLang(), tweet));
     }
 }

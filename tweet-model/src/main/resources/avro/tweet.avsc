@@ -3,9 +3,10 @@
   "type": "record",
   "name": "Tweet",
   "fields": [
-    {"name": "id", "type":  "string", "default":  "", "doc":  "Tweet ID"},
-    {"name": "lang", "type":  "string", "default":  "", "doc":  "Tweet language"},
-    {"name": "text", "type":  "string", "default":  "", "doc":  "Tweet message"},
+    {"name": "id", "type": "string", "default":  "", "doc":  "Tweet ID"},
+    {"name": "lang", "type": "string", "default":  "", "doc":  "Tweet language"},
+    {"name": "text", "type": "string", "default":  "", "doc":  "Tweet message"},
+    {"name": "createdAt", "type": "string", "default":  "", "doc":  "Tweet creation timestamp"},
     {"name": "hashtags", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of hashtags in tweet"}
   ]
 }
