@@ -28,6 +28,7 @@
         <avro.version>1.10.0</avro.version>
         <kafka.version>2.6.0</kafka.version>
         <confluent.version>5.5.1</confluent.version>
+        <jupiter.version>5.1.0</jupiter.version>
         <encoding>utf-8</encoding>
     </properties>
 
@@ -69,9 +70,20 @@
                 <version>${confluent.version}</version>
             </dependency>
             <dependency>
+                <groupId>io.confluent</groupId>
+                <artifactId>kafka-streams-avro-serde</artifactId>
+                <version>${confluent.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro</artifactId>
                 <version>${avro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${jupiter.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
