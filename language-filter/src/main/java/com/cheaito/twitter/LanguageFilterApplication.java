@@ -46,7 +46,7 @@ public class LanguageFilterApplication {
 //                .peek((k, tweet) -> logger.info("Tweet: {} - {}", tweet.getLang(), tweet.getText()))
                 .filter((key, tweet) -> tweet.getLang().equals(ENGLISH_LANG))
                 .transformValues(LanguageCleaner::new)
-//                .peek((k, tweet) -> logger.info("Cleaned: {} - {}", tweet.getLang(), tweet.getText()))
+                .peek((k, tweet) -> logger.info("Cleaned: {} - {}", tweet.getLang(), tweet.getText()))
                 .to(sanatizedTopicName);
 
         return new KafkaStreams(builder.build(), props);

@@ -40,27 +40,32 @@ public class TwitterClient {
                 .addHeader("Authorization", "Bearer " + twitterProps.getProperty("app.bearerToken"))
                 .execute()
                 .handleResponse(httpResponse -> {
-                    if (httpResponse.getStatusLine().getStatusCode() >= HttpStatus.SC_BAD_REQUEST) {
-                        throw new RuntimeException("Bad response from Twitter: "
-                                + httpResponse.getStatusLine().getStatusCode() + " - " + httpResponse.getStatusLine().getReasonPhrase());
-                    }
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpResponse.getEntity().getContent())));
-                    boolean keepReading = true;
-                    while (keepReading) {
-                        String response = br.readLine();
-                        if (response == null) {
-                            keepReading = false;
-                        }
-                        TwitterApiResponse apiResponse = objectMapper.readValue(response, TwitterApiResponse.class);
-                        tweetKafkaProducer.produce(apiResponse.getData());
-                        try {
-                            Thread.sleep(readDelay);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                            if (httpResponse.getStatusLine().getStatusCode() >= HttpStatus.SC_BAD_REQUEST) {
+                                throw new RuntimeException("Bad response from Twitter: "
+                                        + httpResponse.getStatusLine().getStatusCode() + " - " + httpResponse.getStatusLine().getReasonPhrase());
+                            }
+                            BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpResponse.getEntity().getContent())));
+                            boolean keepReading = true;
+                            while (keepReading) {
+                                String response = br.readLine();
+                                if (response == null) {
+                                    keepReading = false;
+                                }
+                                System.out.println("Parsing api response: " + response);
+                                if (!response.isEmpty()) {
+                                    TwitterApiResponse apiResponse = objectMapper.readValue(response, TwitterApiResponse.class);
+                                    tweetKafkaProducer.produce(apiResponse.getData());
+                                }
+                                try {
+                                    Thread.sleep(readDelay);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
                             return null;
                         }
                 );
+        System.out.println("Exited API consumption call");
     }
 }

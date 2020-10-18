@@ -7,6 +7,8 @@
     {"name": "lang", "type": "string", "default":  "", "doc":  "Tweet language"},
     {"name": "text", "type": "string", "default":  "", "doc":  "Tweet message"},
     {"name": "createdAt", "type": "string", "default":  "", "doc":  "Tweet creation timestamp"},
-    {"name": "hashtags", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of hashtags in tweet"}
+    {"name": "hashtags", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of hashtags in tweet"},
+    {"name": "mentions", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of mentions in tweet"},
+    {"name": "urls", "type": {"type": "array", "items":"string"}, "default": [], "doc": "List of urls in tweet"}
   ]
 }

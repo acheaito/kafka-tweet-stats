@@ -7,7 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +30,13 @@ class TweetDeserializerTest {
     @Test
     public void deserializesSimpleTweet() throws Exception {
         JsonParser parser = om.createParser(SIMPLE_TWEET);
-        Tweet expected = new Tweet("1", "en", "Hello world", Instant.now().toString(), Collections.emptyList());
+        Tweet expected = Tweet.newBuilder()
+                .setId("1")
+                .setLang("en")
+                .setText("Hello world")
+                .setCreatedAt(Instant.now().toString())
+                .build();
+
         Tweet actual = subject.deserialize(parser, null);
         assertEquals(expected, actual);
     }
