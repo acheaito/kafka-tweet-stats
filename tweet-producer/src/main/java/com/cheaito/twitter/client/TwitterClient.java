@@ -5,6 +5,8 @@ import com.cheaito.twitter.model.TwitterApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.fluent.Request;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.io.BufferedInputStream;
@@ -22,6 +24,7 @@ public class TwitterClient {
     private final Properties twitterProps;
     private final TweetKafkaProducer tweetKafkaProducer;
     private final ObjectMapper objectMapper;
+    private Logger logger = LoggerFactory.getLogger(TwitterClient.class);
 
     @Inject
     public TwitterClient(TweetKafkaProducer tweetKafkaProducer, ObjectMapper objectMapper) throws IOException {
@@ -45,13 +48,14 @@ public class TwitterClient {
                                         + httpResponse.getStatusLine().getStatusCode() + " - " + httpResponse.getStatusLine().getReasonPhrase());
                             }
                             BufferedReader br = new BufferedReader(new InputStreamReader(new BufferedInputStream(httpResponse.getEntity().getContent())));
+                    logger.debug("Starting Twitter API stream loop");
                             boolean keepReading = true;
                             while (keepReading) {
                                 String response = br.readLine();
                                 if (response == null) {
                                     keepReading = false;
                                 }
-                                System.out.println("Parsing api response: " + response);
+                                logger.debug("Parsing api response: {}", response);
                                 if (!response.isEmpty()) {
                                     TwitterApiResponse apiResponse = objectMapper.readValue(response, TwitterApiResponse.class);
                                     tweetKafkaProducer.produce(apiResponse.getData());

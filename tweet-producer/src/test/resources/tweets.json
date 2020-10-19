@@ -1,0 +1,70 @@
+{
+  "SIMPLE": {
+    "id": "0",
+    "lang": "en",
+    "text": "Hello world",
+    "created_at": "2020-10-01T13:53:16.001Z"
+  },
+  "WITH_EMPTY_ENTITIES": {
+    "id": "1",
+    "lang": "en",
+    "text": "Hello world",
+    "created_at": "2020-10-01T13:53:16.001Z",
+    "entities": {
+      "mentions": []
+    }
+  },
+  "WITH_HASHTAGS": {
+    "id": "2",
+    "lang": "en",
+    "text": "Hello world #helloworld #hi",
+    "created_at": "2020-10-01T13:53:16.001Z",
+    "entities": {
+      "mentions": [],
+      "hashtags": [
+        {
+          "tag": "#helloworld",
+          "start": 12,
+          "end": 22
+        },
+        {
+          "tag": "#hi",
+          "start": 24,
+          "end": 26
+        }
+      ]
+    }
+  },
+  "WITH_MENTIONS": {
+    "id": "3",
+    "text": "RT @Someone: Hi ☺",
+    "entities": {
+      "mentions": [
+        {
+          "start": 3,
+          "end": 10,
+          "username": "Someone"
+        }
+      ]
+    },
+    "created_at": "2020-10-19T13:53:16.001Z",
+    "lang": "tr"
+  },
+  "WITH_URLS": {
+    "id": "4",
+    "text": "Hello https://google.com",
+    "entities": {
+      "urls": [
+        {
+          "start": 6,
+          "end": 24,
+          "url": "https://google.com",
+          "expanded_url": "https://google.com",
+          "display_url": "google.com"
+        }
+      ]
+    },
+    "created_at": "2020-10-19T13:53:16.001Z",
+    "lang": "tr"
+  }
+}
