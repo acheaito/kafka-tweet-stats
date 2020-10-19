@@ -4,6 +4,7 @@ import com.cheaito.twitter.model.Tweet;
 import com.cheaito.twitter.model.TwitterApiResponse;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -24,7 +25,9 @@ public class ObjectMapperFactory {
                     }
                 });
         return new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 .registerModule(tweetModule)
                 .registerModule(twitterApiResponseModule);
+
     }
 }
