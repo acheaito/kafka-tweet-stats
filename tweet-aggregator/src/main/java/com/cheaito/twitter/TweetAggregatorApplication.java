@@ -56,20 +56,20 @@ public class TweetAggregatorApplication {
         hashtagStatsSpecificAvroSerde.configure(Collections.singletonMap(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, props.getProperty("schema.registry.url")), false);
 
         KStream<String, Tweet> tweetsByLang = streamsBuilder.stream(sourceTopicName);
-        setupLongTermStatsStream(longtermStatsTopicName, hashtagStatsSpecificAvroSerde, tweetsByLang);
+        KStream<String, Tweet> tweetsByHashtag = tweetsByLang
+                .flatMap((key, tweet) -> tweet.getHashtags()
+                        .stream()
+                        .map(hashtag -> KeyValue.pair(hashtag.toLowerCase(), tweet))
+                        .collect(Collectors.toSet()));
+        setupLongTermStatsStream(longtermStatsTopicName, hashtagStatsSpecificAvroSerde, tweetsByHashtag);
 
         Duration recentWindow = Duration.ofMinutes(Long.parseLong(props.getProperty("stats.recent.duration")));
         Duration windowAdvance = Duration.ofMinutes(Long.parseLong(props.getProperty("stats.recent.duration.advance")));
-        setupWindowedStatsStream(recentStatsTopicName, hashtagStatsSpecificAvroSerde, tweetsByLang, recentWindow, windowAdvance);
+        setupWindowedStatsStream(recentStatsTopicName, hashtagStatsSpecificAvroSerde, tweetsByHashtag, recentWindow, windowAdvance);
         return new KafkaStreams(streamsBuilder.build(), props);
     }
 
-    private void setupLongTermStatsStream(String topicName, SpecificAvroSerde<HashtagStats> hashtagStatsSpecificAvroSerde, KStream<String, Tweet> tweetsByLang) {
-        KStream<String, Tweet> tweetsByHashtag = tweetsByLang.flatMap((key, tweet) -> tweet.getHashtags()
-                .stream()
-                .map(hashtag -> KeyValue.pair(hashtag.toLowerCase(), tweet))
-                .collect(Collectors.toSet()));
-
+    private void setupLongTermStatsStream(String topicName, SpecificAvroSerde<HashtagStats> hashtagStatsSpecificAvroSerde, KStream<String, Tweet> tweetsByHashtag) {
         KTable<String, HashtagStats> longTermStats =
                 tweetsByHashtag.groupByKey().aggregate(
                         () -> HashtagStats.newBuilder().build(),
@@ -81,11 +81,11 @@ public class TweetAggregatorApplication {
         longTermStats.toStream().to(topicName, Produced.with(new Serdes.StringSerde(), hashtagStatsSpecificAvroSerde));
     }
 
-    private void setupWindowedStatsStream(String topicName, SpecificAvroSerde<HashtagStats> hashtagStatsSpecificAvroSerde, KStream<String, Tweet> tweetsByLang, Duration windowSizeDuration, Duration advanceDuration) {
+    private void setupWindowedStatsStream(String topicName, SpecificAvroSerde<HashtagStats> hashtagStatsSpecificAvroSerde, KStream<String, Tweet> tweetsByHashtag, Duration windowSizeDuration, Duration advanceDuration) {
         TimeWindows timeWindows = TimeWindows.of(windowSizeDuration).advanceBy(advanceDuration);
 
         KTable<Windowed<String>, HashtagStats> windowsHashtagStatsKTable =
-                tweetsByLang.filter((k, tweet) -> isTweetRecent(tweet, windowSizeDuration))
+                tweetsByHashtag.filter((k, tweet) -> isTweetRecent(tweet, windowSizeDuration))
                         .groupByKey()
                         .windowedBy(timeWindows)
                         .aggregate(
