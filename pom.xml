@@ -113,6 +113,11 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <from>
+                            <image>gcr.io/distroless/java:11</image>
+                        </from>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
