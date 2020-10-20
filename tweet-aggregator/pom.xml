@@ -12,6 +12,11 @@
 
     <artifactId>tweet-aggregator</artifactId>
 
+    <properties>
+        <exec.mainClass>com.cheaito.twitter.TweetAggregatorApplication</exec.mainClass>
+        <jib.phase>package</jib.phase>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.cheaito.twitter</groupId>
@@ -47,19 +52,5 @@
             <artifactId>log4j</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <to>
-                        <image>${project.parent.artifactId}/tweet-aggregator</image>
-                    </to>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

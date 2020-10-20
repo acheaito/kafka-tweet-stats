@@ -12,6 +12,11 @@
 
     <artifactId>tweet-producer</artifactId>
 
+    <properties>
+        <exec.mainClass>com.cheaito.twitter.TweetProducerApplication</exec.mainClass>
+        <jib.phase>package</jib.phase>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.cheaito.twitter</groupId>

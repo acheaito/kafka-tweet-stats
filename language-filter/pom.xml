@@ -12,6 +12,11 @@
 
     <artifactId>language-filter</artifactId>
 
+    <properties>
+        <exec.mainClass>com.cheaito.twitter.LanguageFilterApplication</exec.mainClass>
+        <jib.phase>package</jib.phase>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.cheaito.twitter</groupId>

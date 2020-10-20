@@ -11,6 +11,10 @@
 
     <artifactId>tweet-consumer</artifactId>
 
+    <properties>
+        <exec.mainClass>com.cheaito.twitter.TweetConsumerApplication</exec.mainClass>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.cheaito.twitter</groupId>
