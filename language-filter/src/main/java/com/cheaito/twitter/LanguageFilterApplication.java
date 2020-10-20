@@ -4,25 +4,18 @@ import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.KStream;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 public class LanguageFilterApplication {
-    private static final String ENGLISH_LANG = "en";
-    Logger logger = LoggerFactory.getLogger("language-filter");
+    Logger logger = LoggerFactory.getLogger(LanguageFilterApplication.class);
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
-        Weld weld = new Weld();
-        WeldContainer weldContainer = weld.initialize();
-        LanguageFilterApplication application = weldContainer.select(LanguageFilterApplication.class).get();
+    public static void main(String[] args) throws IOException {
+        LanguageFilterApplication application = new LanguageFilterApplication();
         application.start();
-        weld.shutdown();
     }
 
     private void start() throws IOException {

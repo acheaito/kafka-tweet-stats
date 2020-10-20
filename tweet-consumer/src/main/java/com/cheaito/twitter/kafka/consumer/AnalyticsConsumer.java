@@ -1,22 +1,19 @@
 package com.cheaito.twitter.kafka.consumer;
 
-import com.cheaito.twitter.kafka.TopicName;
 import com.cheaito.twitter.model.Tweet;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
-import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 
 public class AnalyticsConsumer {
-    private volatile boolean keepConsuming = true;
     private final Consumer<String, Tweet> consumer;
     private final ConsumerRecordHandler<String, Tweet> recordHandler;
     private final String topicName;
+    private volatile boolean keepConsuming = true;
 
-    @Inject
-    public AnalyticsConsumer(Consumer<String, Tweet> consumer, ConsumerRecordHandler<String, Tweet> recordHandler, @TopicName String topicName) {
+    public AnalyticsConsumer(Consumer<String, Tweet> consumer, ConsumerRecordHandler<String, Tweet> recordHandler, String topicName) {
         this.consumer = consumer;
         this.recordHandler = recordHandler;
         this.topicName = topicName;

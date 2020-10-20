@@ -9,13 +9,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class WordMasker {
+    private static final String WORD_LIST_URL = "https://raw.githubusercontent.com/RobertJGabriel/Google-profanity-words/master/list.txt";
     private static final List<String> badWordList = loadWorldList();
 
     private static List<String> loadWorldList() {
         try {
             Path cachedWordList = Paths.get(System.getProperty("java.io.tmpdir"), "profaneWordList.txt");
             if (Files.notExists(cachedWordList)) {
-                try (InputStream inputStream = new URL("https://raw.githubusercontent.com/RobertJGabriel/Google-profanity-words/master/list.txt")
+                try (InputStream inputStream = new URL(WORD_LIST_URL)
                         .openConnection().getInputStream()) {
                     Files.write(cachedWordList, inputStream.readAllBytes());
                 }

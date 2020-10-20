@@ -38,10 +38,6 @@
             <version>2.11.2</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.confluent</groupId>
             <artifactId>kafka-avro-serializer</artifactId>
         </dependency>
