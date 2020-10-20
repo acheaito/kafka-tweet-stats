@@ -15,6 +15,7 @@
         <module>tweet-consumer</module>
         <module>tweet-model</module>
         <module>language-filter</module>
+        <module>kafka-connector</module>
     </modules>
 
     <repositories>

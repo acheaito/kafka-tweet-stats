@@ -1,0 +1,20 @@
+{
+  "name": "SinkStatsTopicsToPostgres",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "3",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "true",
+    "topics": "",
+    "topics.regex": "tweets-stats-.*",
+    "connection.url": "jdbc:postgresql://172.18.0.11:5432/tweetstats",
+    "connection.user": "postgres",
+    "connection.password": "postgres",
+    "insert.mode": "upsert",
+    "pk.mode": "record_value",
+    "pk.fields": "tag",
+    "auto.create": "true",
+    "auto.evolve": "true"
+  }
+}

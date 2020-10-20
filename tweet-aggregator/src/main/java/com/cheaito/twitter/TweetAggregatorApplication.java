@@ -16,8 +16,6 @@ import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.state.KeyValueStore;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -54,7 +52,7 @@ public class TweetAggregatorApplication {
         KStream<String, Tweet> tweetsByLang = streamsBuilder.stream(sourceTopicName);
         KStream<String, Tweet> tweetsByHashtag = tweetsByLang.flatMap((key, tweet) -> tweet.getHashtags()
                 .stream()
-                .map(hashtag -> KeyValue.pair(hashtag, tweet))
+                .map(hashtag -> KeyValue.pair(hashtag.toLowerCase(), tweet))
                 .collect(Collectors.toSet()));
 
         KTable<String, HashtagStats> longTermStats =
@@ -73,7 +71,7 @@ public class TweetAggregatorApplication {
         HashtagStats.Builder hashtagStatsBuilder = HashtagStats.newBuilder(currentStats);
         hashtagStatsBuilder.setTag(hashtag);
         hashtagStatsBuilder.setCount(hashtagStatsBuilder.getCount() + 1);
-        hashtagStatsBuilder.setLastTweetTime(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(tweet.getCreatedAt())));
+        hashtagStatsBuilder.setLastTweetTime(tweet.getCreatedAt());
         return hashtagStatsBuilder.build();
     }
 }

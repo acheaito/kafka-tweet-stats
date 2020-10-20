@@ -25,7 +25,7 @@ class TweetDeserializerTest {
     public void setupEach() throws Exception {
         subject = new TweetDeserializer();
         om = ObjectMapperFactory.instance();
-        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("tweets.json")) {
+        try (InputStream is = this.getClass().getClassLoader().getResourceAsStream("example-tweets.json")) {
             exampleTweets = om.createParser(is).readValueAsTree();
         }
     }

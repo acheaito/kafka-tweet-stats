@@ -25,7 +25,7 @@ public class LanguageFilterApplication {
         weld.shutdown();
     }
 
-    private void start() throws IOException, URISyntaxException {
+    private void start() throws IOException {
         Properties props = new Properties();
         props.load(this.getClass().getClassLoader().getResourceAsStream("kafka.properties"));
         KafkaStreams streams = createStreamTopology(props);
@@ -43,10 +43,11 @@ public class LanguageFilterApplication {
         String sanatizedTopicName = props.getProperty("sanitized.topic.name");
 
         tweets
-//                .peek((k, tweet) -> logger.info("Tweet: {} - {}", tweet.getLang(), tweet.getText()))
-                .filter((key, tweet) -> tweet.getLang().equals(ENGLISH_LANG))
+//                .peek((k, tweet) -> logger.debug("Tweet: {} - {}", tweet.getLang(), tweet.getText()))
+//                .filter((key, tweet) -> tweet.getLang().equals(ENGLISH_LANG))
                 .transformValues(LanguageCleaner::new)
-                .peek((k, tweet) -> logger.info("Cleaned: {} - {}", tweet.getLang(), tweet.getText()))
+                .repartition()
+                .peek((k, tweet) -> logger.debug("Cleaned: {} - {}", tweet.getLang(), tweet.getText()))
                 .to(sanatizedTopicName);
 
         return new KafkaStreams(builder.build(), props);

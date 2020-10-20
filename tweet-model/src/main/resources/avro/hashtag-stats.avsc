@@ -4,8 +4,8 @@
   "name": "HashtagStats",
   "fields": [
     {"name": "tag", "type": "string", "default": "", "doc": "Hashtag text"},
-    {"name": "count",  "type": "long", "default": 0},
-    {"name": "last_tweet_time",  "type": {"type": "long", "logicalType": "timestamp-millis"}, "doc": "last time the hashtag was used"}
+    {"name": "count",  "type": "long", "default": 0, "doc": "How many times this hashtag appeared"},
+    {"name": "last_tweet_time",  "type": "string", "default": "2020-10-19T13:53:16.001Z", "doc": "last time the hashtag was used"}
   ]
 }
 ]
