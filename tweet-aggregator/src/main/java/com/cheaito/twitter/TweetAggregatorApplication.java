@@ -28,11 +28,6 @@ public class TweetAggregatorApplication {
     private Logger logger = LoggerFactory.getLogger(TweetAggregatorApplication.class);
 
     public static void main(String[] args) throws IOException {
-//        Weld weld = new Weld();
-//        WeldContainer weldContainer = weld.initialize();
-//        TweetAggregatorApplication application = weldContainer.select(TweetAggregatorApplication.class).get();
-//        application.start();
-//        weld.shutdown();
         new TweetAggregatorApplication().start();
     }
 
@@ -49,7 +44,7 @@ public class TweetAggregatorApplication {
     private KafkaStreams createStreamTopology(Properties props) {
         StreamsBuilder streamsBuilder = new StreamsBuilder();
         String sourceTopicName = props.getProperty("source.topic.name");
-        String longtermStatsTopicName = props.getProperty("stats.alltime.topic.name");
+        String longtermStatsTopicName = props.getProperty("stats.longterm.topic.name");
         String recentStatsTopicName = props.getProperty("stats.recent.topic.name");
         SpecificAvroSerde<HashtagStats> hashtagStatsSpecificAvroSerde = new SpecificAvroSerde<>();
 
